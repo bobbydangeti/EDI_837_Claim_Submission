@@ -1,0 +1,130 @@
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField
+from wtforms.validators import DataRequired, Optional, NumberRange, Length, Regexp, optional
+
+class BillingProviderForm(FlaskForm):
+    # Entity Identifier Code (required dropdown)
+    entity_identifier = SelectField(
+        "Entity Identifier Code", 
+        choices=[('85', 'Billing Provider'), ('87', 'Pay-to Provider')], 
+        validators=[DataRequired()]  # Field is required
+    )
+
+    # Entity Type Qualifier (required dropdown)
+    entity_type_qualifier = SelectField(
+        "Entity Type Qualifier", 
+        choices=[('1', 'Person'), ('2', 'Non-Person Entity')], 
+        validators=[DataRequired()]  # Field is required
+    )
+
+    # Billing Provider Last Name (required with max length)
+    last_name = StringField(
+        "Billing Provider Last Name", 
+        validators=[DataRequired(), Length(max=50)]  # Required with max 50 chars
+    )
+
+    # Billing Provider First Name (optional with max length)
+    first_name = StringField(
+        "Billing Provider First Name", 
+        validators=[Optional(), Length(max=50)]  # Optional with max 50 chars
+    )
+
+    # Billing Provider middle Name (required with max length)
+    middle_name = StringField(
+        "Billing Provider middile Name", 
+        validators=[optional(), Length(max=50)]  # Required with max 50 chars
+
+    )
+
+    # Identification Code Qualifier (hidden field, always set to "XX")
+    id_code_qualifier = HiddenField(
+        "Identification Code Qualifier", 
+        default="XX"  # Default value is set to "XX"
+    )
+
+    # Billing Provider Identifier (numeric, required, positive integer)
+    provider_identifier = IntegerField(
+        "Billing Provider Identifier", 
+        validators=[DataRequired(), NumberRange(min=1)]  # Required positive integer
+    )
+
+    # Address Line 1 (required)
+    address_line_1 = StringField(
+        "Address Line 1", 
+        validators=[DataRequired()]  # Mandatory field
+    )
+
+    # Address Line 2 (optional, no validation)
+    address_line_2 = StringField("Address Line 2")
+
+    # City Name (required)
+    city_name = StringField(
+        "City Name", 
+        validators=[DataRequired()]  # Mandatory field
+    )
+
+    # State (mandatory field)
+    state = StringField(
+        "State", 
+        validators=[DataRequired()]  # Makes the field mandatory
+    )
+    
+
+    # Postal (ZIP) Code (required with specific pattern for ZIP format)
+    postal_code = StringField(
+        "Postal (ZIP) Code", 
+        validators=[DataRequired(), Regexp(r'^\d{5}(-\d{4})?$', 
+                                message="Invalid ZIP Code")]  # US ZIP code format
+    )
+
+    # Country Code (optional, 2-letter uppercase alpha code)
+    country_code = StringField(
+        "Country Code", 
+        validators=[DataRequired(), Regexp(r'^[A-Z]{2}$', message="Invalid Country Code"
+                                          )
+                   ]  
+        # Optional 2-letter code
+    )
+
+    # Reference Identification Qualifier (required dropdown with options for SSN and Employer ID)
+    reference_id_qualifier = SelectField(
+        "Reference Identification Qualifier", 
+        choices=[('SY', 'SSN'), ('EI', 'Employer ID')], 
+        validators=[DataRequired()]  # Mandatory field
+    )
+
+    # Secondary Identifier (optional)
+    secondary_identifier = StringField(
+        "Billing Provider Secondary Identifier", 
+        validators=[Optional(), Length(max=20)]  
+        # Optional field, max length of 20 characters
+    )
+
+    # Contact Function Code (required dropdown with example option)
+    contact_function_code = SelectField(
+        "Contact Function Code", 
+        choices=[('IC', 'Information Contact')], 
+        validators=[DataRequired()]  # Mandatory field
+    )
+
+    # Contact Name (optional)
+    contact_name = StringField(
+        "Billing Provider Contact Name", 
+        validators=[Optional(), Length(max=50)]  # Optional field, max length of 50 characters
+    )
+
+    # Communication Number Qualifier (required dropdown with example option for Telephone)
+    communication_number_qualifier = SelectField(
+        "Communication Number Qualifier", 
+        choices=[('TE', 'Telephone')], 
+        validators=[DataRequired()]  # Mandatory field
+    )
+
+    # Communication Number (phone number, required, numeric format)
+    communication_number = StringField(
+        "Communication Number", 
+        validators=[DataRequired(), Regexp(r'^\d{10}$', message="Invalid phone number. Must be 10 digits.")]  # 10-digit phone number
+    )
+
+    # Submit button
+    submit = SubmitField("Next")

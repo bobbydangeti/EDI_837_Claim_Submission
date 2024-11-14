@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Submission Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Billing Provider Information Form</h1>
+    <form method="POST" action="{{ url_for('billing_provider') }}">
+        {{ form.hidden_tag() }}
+
+        <!-- Entity Identifier Code -->
+        <label>{{ form.entity_identifier.label }}<span class="required">*</span></label>
+        {{ form.entity_identifier() }}
+        {% if form.entity_identifier.errors %}
+            <p style="color: red;">{{ form.entity_identifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Entity Type Qualifier -->
+        <label>{{ form.entity_type_qualifier.label }}<span class="required">*</span></label>
+        {{ form.entity_type_qualifier() }}
+        {% if form.entity_type_qualifier.errors %}
+            <p style="color: red;">{{ form.entity_type_qualifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Billing Provider Last Name / organization name -->
+        <label>{{ form.last_name.label }}<span class="required">*</span></label>
+        {{ form.last_name() }}
+        {% if form.last_name.errors %}
+            <p style="color: red;">{{ form.last_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Billing Provider First Name -->
+        <label>{{ form.first_name.label }}</label>
+        {{ form.first_name() }}
+        {% if form.first_name.errors %}
+            <p style="color: red;">{{ form.first_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Billing Provider Middle Name -->
+        <label>{{ form.middle_name.label }}</label>
+        {{ form.middle_name() }}
+        {% if form.middle_name.errors %}
+            <p style="color: red;">{{ form.middle_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Identification Code Qualifier -->
+        <label>{{ form.id_code_qualifier.label }}</label>
+        {{ form.id_code_qualifier() }}
+        {% if form.id_code_qualifier.errors %}
+            <p style="color: red;">{{ form.id_code_qualifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Billing Provider Identifier -->
+        <label>{{ form.provider_identifier.label }}<span class="required">*</span></label>
+        {{ form.provider_identifier() }}
+        {% if form.provider_identifier.errors %}
+            <p style="color: red;">{{ form.provider_identifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Address Line 1 -->
+        <label>{{ form.address_line1.label }}</label>
+        {{ form.address_line1() }}
+        {% if form.address_line1.errors %}
+            <p style="color: red;">{{ form.address_line1.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Address Line 2 -->
+        <label>{{ form.address_line2.label }}</label>
+        {{ form.address_line2() }}
+        {% if form.address_line2.errors %}
+            <p style="color: red;">{{ form.address_line2.errors[0] }}</p>
+        {% endif %}
+
+        <!-- City Name -->
+        <label>{{ form.city_name.label }}</label>
+        {{ form.city_name() }}
+        {% if form.city_name.errors %}
+            <p style="color: red;">{{ form.city_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- State -->
+        <label>{{ form.state.label }}<span class="required">*</span></label>
+        {{ form.state() }}
+        {% if form.state.errors %}
+            <p style="color: red;">{{ form.state.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Postal (ZIP) Code -->
+        <label>{{ form.postal_code.label }}<span class="required">*</span></label>
+        {{ form.postal_code() }}
+        {% if form.postal_code.errors %}
+            <p style="color: red;">{{ form.postal_code.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Country Code -->
+        <label>{{ form.country_code.label }}<span class="required">*</span></label>
+        {{ form.country_code() }}
+        {% if form.country_code.errors %}
+            <p style="color: red;">{{ form.country_code.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Reference Identification Qualifier -->
+        <label>{{ form.reference_id_qualifier.label }}</label>
+        {{ form.reference_id_qualifier() }}
+        {% if form.reference_id_qualifier.errors %}
+            <p style="color: red;">{{ form.reference_id_qualifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Secondary Identifier -->
+        <label>{{ form.secondary_identifier.label }}</label>
+        {{ form.secondary_identifier() }}
+        {% if form.secondary_identifier.errors %}
+            <p style="color: red;">{{ form.secondary_identifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Contact Function Code -->
+        <label>{{ form.contact_function_code.label }}</label>
+        {{ form.contact_function_code() }}
+        {% if form.contact_function_code.errors %}
+            <p style="color: red;">{{ form.contact_function_code.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Contact Name -->
+        <label>{{ form.contact_name.label }}</label>
+        {{ form.contact_name() }}
+        {% if form.contact_name.errors %}
+            <p style="color: red;">{{ form.contact_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Communication Number Qualifier -->
+        <label>{{ form.communication_number_qualifier.label }}</label>
+        {{ form.communication_number_qualifier() }}
+        {% if form.communication_number_qualifier.errors %}
+            <p style="color: red;">{{ form.communication_number_qualifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Communication Number -->
+        <label>{{ form.communication_number.label }}</label>
+        {{ form.communication_number() }}
+        {% if form.communication_number.errors %}
+            <p style="color: red;">{{ form.communication_number.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Next Button -->
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
