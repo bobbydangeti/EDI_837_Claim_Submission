@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField
+from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateField
 from wtforms.validators import DataRequired, Optional, NumberRange, Length, Regexp
+
 
 class BillingProviderForm(FlaskForm):
     entity_identifier = SelectField(
@@ -29,7 +30,7 @@ class BillingProviderForm(FlaskForm):
         "Identification Code Qualifier",
         default="XX"
     )
-    provider_identifier = IntegerField(
+    provider_identifier = StringField(
     "Billing Provider Identifier (NPI)",
     validators=[
         DataRequired(),
@@ -84,4 +85,96 @@ class BillingProviderForm(FlaskForm):
         "Communication Number",
         validators=[DataRequired(), Regexp(r'^\d{10}$', message="Invalid phone number. Must be 10 digits.")]
     )
+    submit = SubmitField("Next")
+
+
+
+
+
+
+class SubscriberInformationForm(FlaskForm):
+    # Subscriber Last Name (NM103, mandatory)
+    subscriber_last_name = StringField(
+        "Subscriber Last Name",
+        validators=[DataRequired(), Length(max=50)]  # Mandatory field
+    )
+
+    # Subscriber First Name (NM104, mandatory)
+    subscriber_first_name = StringField(
+        "Subscriber First Name",
+        validators=[DataRequired(), Length(max=50)]  # Mandatory field
+    )
+
+    # Subscriber Middle Name (NM105, optional)
+    subscriber_middle_name = StringField(
+        "Subscriber Middle Name",
+        validators=[Optional(), Length(max=50)]  # Optional field
+    )
+
+    # Identification Code Qualifier (NM108, hidden field with default "MI")
+    id_code_qualifier = HiddenField(
+        "Identification Code Qualifier",
+        default="MI"  # Automatically filled as "MI" and hidden
+    )
+
+    # Subscriber Identifier (NM109, mandatory)
+    subscriber_identifier = IntegerField(
+        "Subscriber Identifier",
+        validators=[DataRequired(), Regexp(r'^\d+$', message="Subscriber Identifier must be numeric.")]  # Mandatory field
+    )
+
+    # Address Line 1 (N301, mandatory)
+    address_line1 = StringField(
+        "Address Line 1",
+        validators=[DataRequired(), Length(max=100)]  # Mandatory field
+    )
+
+    # Address Line 2 (N302, optional)
+    address_line2 = StringField(
+        "Address Line 2",
+        validators=[Optional(), Length(max=100)]  # Optional field
+    )
+
+    # City (N401, mandatory)
+    city = StringField(
+        "City",
+        validators=[DataRequired(), Length(max=50)]  # Mandatory field
+    )
+
+    # State (N402, mandatory)
+    state = StringField(
+        "State",
+        validators=[DataRequired(), Length(max=2)]  # Mandatory field
+    )
+
+    # ZIP Code (N403, mandatory)
+    zip_code = StringField(
+        "ZIP Code",
+        validators=[
+            DataRequired(),
+            Regexp(r'^\d{5}(-\d{4})?$', message="Enter a valid ZIP Code.")  # Mandatory field with ZIP code pattern
+        ]
+    )
+
+    # Country Code (N404, optional)
+    country_code = StringField(
+        "Country Code",
+        validators=[DataRequired(), Regexp(r'^[A-Z]{2}$', message="Enter a valid 2-letter country code.")]  # Optional field
+    )
+
+    # Date of Birth (DMG02, mandatory)
+    date_of_birth = DateField(
+        "Date of Birth",
+        validators=[DataRequired()],  # Mandatory field
+        format='%Y%m%d'
+    )
+
+    # Gender (DMG03, mandatory)
+    gender = SelectField(
+        "Gender",
+        choices=[('M', 'Male'), ('F', 'Female')],
+        validators=[DataRequired()]  # Mandatory field
+    )
+
+    # Submit button
     submit = SubmitField("Next")

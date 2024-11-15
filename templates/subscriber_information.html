@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriber Information Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Subscriber Information Form</h1>
+    <form method="POST" action="{{ url_for('subscriber_information') }}">
+        {{ form.hidden_tag() }}
+
+        <!-- Subscriber Last Name (NM103, mandatory) -->
+        <label>{{ form.subscriber_last_name.label }} <span class="required">*</span></label>
+        {{ form.subscriber_last_name() }}
+        {% if form.subscriber_last_name.errors %}
+            <p style="color: red;">{{ form.subscriber_last_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Subscriber First Name (NM104, mandatory) -->
+        <label>{{ form.subscriber_first_name.label }} <span class="required">*</span></label>
+        {{ form.subscriber_first_name() }}
+        {% if form.subscriber_first_name.errors %}
+            <p style="color: red;">{{ form.subscriber_first_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Subscriber Middle Name (NM105, optional) -->
+        <label>{{ form.subscriber_middle_name.label }}</label>
+        {{ form.subscriber_middle_name() }}
+        {% if form.subscriber_middle_name.errors %}
+            <p style="color: red;">{{ form.subscriber_middle_name.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Identification Code Qualifier (NM108, hidden, default "MI") -->
+        {{ form.id_code_qualifier() }}
+
+        <!-- Subscriber Identifier (NM109, mandatory) -->
+        <label>{{ form.subscriber_identifier.label }} <span class="required">*</span></label>
+        {{ form.subscriber_identifier() }}
+        {% if form.subscriber_identifier.errors %}
+            <p style="color: red;">{{ form.subscriber_identifier.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Address Line 1 (N301, mandatory) -->
+        <label>{{ form.address_line1.label }} <span class="required">*</span></label>
+        {{ form.address_line1() }}
+        {% if form.address_line1.errors %}
+            <p style="color: red;">{{ form.address_line1.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Address Line 2 (N302, optional) -->
+        <label>{{ form.address_line2.label }}</label>
+        {{ form.address_line2() }}
+        {% if form.address_line2.errors %}
+            <p style="color: red;">{{ form.address_line2.errors[0] }}</p>
+        {% endif %}
+
+        <!-- City (N401, mandatory) -->
+        <label>{{ form.city.label }} <span class="required">*</span></label>
+        {{ form.city() }}
+        {% if form.city.errors %}
+            <p style="color: red;">{{ form.city.errors[0] }}</p>
+        {% endif %}
+
+        <!-- State (N402, mandatory) -->
+        <label>{{ form.state.label }} <span class="required">*</span></label>
+        {{ form.state() }}
+        {% if form.state.errors %}
+            <p style="color: red;">{{ form.state.errors[0] }}</p>
+        {% endif %}
+
+        <!-- ZIP Code (N403, mandatory) -->
+        <label>{{ form.zip_code.label }} <span class="required">*</span></label>
+        {{ form.zip_code() }}
+        {% if form.zip_code.errors %}
+            <p style="color: red;">{{ form.zip_code.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Country Code (N404, optional) -->
+        <label>{{ form.country_code.label }}</label>
+        {{ form.country_code() }}
+        {% if form.country_code.errors %}
+            <p style="color: red;">{{ form.country_code.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Date of Birth (DMG02, mandatory) -->
+        <label>{{ form.date_of_birth.label }} <span class="required">*</span></label>
+        {{ form.date_of_birth() }}
+        {% if form.date_of_birth.errors %}
+            <p style="color: red;">{{ form.date_of_birth.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Gender (DMG03, mandatory) -->
+        <label>{{ form.gender.label }} <span class="required">*</span></label>
+        {{ form.gender() }}
+        {% if form.gender.errors %}
+            <p style="color: red;">{{ form.gender.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Submit Button -->
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
