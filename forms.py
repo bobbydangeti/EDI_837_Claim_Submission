@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateField
+from wtforms import StringField, IntegerField, DecimalField, SelectField, TextAreaField, HiddenField, DateField, SubmitField
 from wtforms.validators import DataRequired, Optional, NumberRange, Length, Regexp
-
 
 class BillingProviderForm(FlaskForm):
     entity_identifier = SelectField(
@@ -118,7 +117,7 @@ class SubscriberInformationForm(FlaskForm):
     )
 
     # Subscriber Identifier (NM109, mandatory)
-    subscriber_identifier = IntegerField(
+    subscriber_identifier = StringField(
         "Subscriber Identifier",
         validators=[DataRequired(), Regexp(r'^\d+$', message="Subscriber Identifier must be numeric.")]  # Mandatory field
     )
@@ -162,13 +161,13 @@ class SubscriberInformationForm(FlaskForm):
         validators=[DataRequired(), Regexp(r'^[A-Z]{2}$', message="Enter a valid 2-letter country code.")]  # Optional field
     )
 
-    # Date of Birth (DMG02, mandatory)
-    date_of_birth = DateField(
+    date_of_birth = StringField(
         "Date of Birth",
-        validators=[DataRequired()],  # Mandatory field
-        format='%Y%m%d'
+        validators=[
+            DataRequired(),
+            Regexp(r'^\d{2}-\d{2}-\d{4}$', message="Date of Birth must be in DD-MM-YYYY format.")
+        ]
     )
-
     # Gender (DMG03, mandatory)
     gender = SelectField(
         "Gender",
@@ -178,3 +177,53 @@ class SubscriberInformationForm(FlaskForm):
 
     # Submit button
     submit = SubmitField("Next")
+
+
+class ClaimForm(FlaskForm):
+    # Claim Information
+    claim_id = StringField("Claim ID", validators=[DataRequired(), Length(max=20)])
+    claim_amount = DecimalField("Claim Amount", validators=[DataRequired(), NumberRange(min=0)], places=2)
+    place_of_service_code = IntegerField("Place of Service Code", validators=[DataRequired(), NumberRange(min=1, max=99, message="Please enter a number between 1 and 99.")])
+    claim_frequency_code = HiddenField("Claim Frequency Code", default="1", validators=[Optional(), Length(max=5)])
+    
+    provider_signature_indicator = SelectField("Provider Signature Indicator", choices=[("Y", "Yes"), ("N", "No")], validators=[DataRequired()])
+    assignment_of_benefits_indicator = SelectField("Assignment of Benefits Indicator", choices=[("Y", "Yes"), ("N", "No")], validators=[DataRequired()])
+    patient_signature_indicator = SelectField("Patient Signature Indicator", choices=[("Y", "Yes"), ("N", "No")], validators=[DataRequired()])
+    release_of_information_code = SelectField("Release of Information Code", choices=[("Y", "Yes"), ("N", "No")], validators=[DataRequired()])
+
+
+    # Dates and Service Information
+    date_time_qualifier = StringField("Date/Time Qualifier", default="434", validators=[Optional(), Length(max=5)])
+    date_format_qualifier = StringField("Date Format Qualifier", default="D8", validators=[Optional(), Length(max=5)])
+    date_of_service = DateField("Date of Service", validators=[DataRequired()], format='%Y-%m-%d')
+
+    # Diagnosis Codes
+    diagnosis_code_qualifier = StringField("Diagnosis Code Qualifier", default="ABK", validators=[Optional(), Length(max=5)])
+    diagnosis_code = StringField("Diagnosis Code", validators=[DataRequired(), Length(max=10)])
+    additional_diagnosis_codes = StringField("Additional Diagnosis Codes", validators=[Optional(), Length(max=50)])
+
+    # Reference Identifiers
+    reference_id_qualifier = StringField("Reference Identification Qualifier", default="D9", validators=[Optional(), Length(max=5)])
+    claim_identifier_transmission = StringField("Claim Identifier for Transmission", validators=[DataRequired(), Length(max=20)])
+
+    # Notes
+    note_reference_code = StringField("Note Reference Code", default="ADD", validators=[Optional(), Length(max=5)])
+    claim_note_text = TextAreaField("Claim Note Text", validators=[Optional(), Length(max=200)])
+
+    # Amounts and Codes
+    amount_qualifier_code = StringField("Amount Qualifier Code", default="F5", validators=[Optional(), Length(max=5)])
+    patient_amount_paid = DecimalField("Patient Amount Paid", validators=[Optional(), NumberRange(min=0)], places=2)
+    report_type_code = StringField("Report Type Code", default="OB", validators=[Optional(), Length(max=5)])
+    report_transmission_code = StringField("Report Transmission Code", default="AA", validators=[Optional(), Length(max=5)])
+
+    # Patient Information
+    patient_weight = DecimalField("Patient Weight", validators=[Optional(), NumberRange(min=0)], places=1)
+
+    # Ambulance and Condition Information
+    ambulance_transport_code = StringField("Ambulance Transport Code", default="N", validators=[Optional(), Length(max=5)])
+    condition_indicator = SelectField("Condition Indicator", choices=[("Y", "Yes"), ("N", "No")], default="N", validators=[Optional()])
+    condition_code = StringField("Condition Code", validators=[Optional(), Length(max=5)])
+
+    # Submit Button
+    submit = SubmitField("Submit Claim")
+

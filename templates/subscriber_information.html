@@ -86,7 +86,7 @@
 
         <!-- Date of Birth (DMG02, mandatory) -->
         <label>{{ form.date_of_birth.label }} <span class="required">*</span></label>
-        {{ form.date_of_birth() }}
+        {{ form.date_of_birth(class="form-control", placeholder="dd-mm-yyyy") }}
         {% if form.date_of_birth.errors %}
             <p style="color: red;">{{ form.date_of_birth.errors[0] }}</p>
         {% endif %}

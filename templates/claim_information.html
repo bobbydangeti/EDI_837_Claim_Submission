@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Claim Form</h1>
+    <form method="POST" action="{{ url_for('claim_information') }}">
+        {{ form.hidden_tag() }}
+
+        <!-- Claim Information -->
+        <label>{{ form.claim_id.label }}</label>
+        {{ form.claim_id(class="form-control") }}
+        
+        <label>{{ form.claim_amount.label }}</label>
+        {{ form.claim_amount(class="form-control") }}
+
+        <label>{{ form.place_of_service_code.label }}</label>
+        {{ form.place_of_service_code(class="form-control") }}
+
+        {{ form.claim_frequency_code() }} <!-- Hidden field -->
+
+        <label>{{ form.provider_signature_indicator.label }}</label>
+        {{ form.provider_signature_indicator(class="form-control") }}
+
+        <label>{{ form.assignment_of_benefits_indicator.label }}</label>
+        {{ form.assignment_of_benefits_indicator(class="form-control") }}
+
+        <label>{{ form.patient_signature_indicator.label }}</label>
+        {{ form.patient_signature_indicator(class="form-control") }}
+
+        <label>{{ form.release_of_information_code.label }}</label>
+        {{ form.release_of_information_code(class="form-control") }}
+
+        <!-- Dates and Service Information -->
+        <label>{{ form.date_time_qualifier.label }}</label>
+        {{ form.date_time_qualifier(class="form-control") }}
+
+        <label>{{ form.date_format_qualifier.label }}</label>
+        {{ form.date_format_qualifier(class="form-control") }}
+
+        <label>{{ form.date_of_service.label }}</label>
+        {{ form.date_of_service(class="form-control", placeholder="YYYY-MM-DD") }}
+
+        <!-- Diagnosis Codes -->
+        <label>{{ form.diagnosis_code_qualifier.label }}</label>
+        {{ form.diagnosis_code_qualifier(class="form-control") }}
+
+        <label>{{ form.diagnosis_code.label }}</label>
+        {{ form.diagnosis_code(class="form-control") }}
+
+        <label>{{ form.additional_diagnosis_codes.label }}</label>
+        {{ form.additional_diagnosis_codes(class="form-control") }}
+
+        <!-- Reference Identifiers -->
+        <label>{{ form.reference_id_qualifier.label }}</label>
+        {{ form.reference_id_qualifier(class="form-control") }}
+
+        <label>{{ form.claim_identifier_transmission.label }}</label>
+        {{ form.claim_identifier_transmission(class="form-control") }}
+
+        <!-- Notes -->
+        <label>{{ form.note_reference_code.label }}</label>
+        {{ form.note_reference_code(class="form-control") }}
+
+        <label>{{ form.claim_note_text.label }}</label>
+        {{ form.claim_note_text(class="form-control", rows="3") }}
+
+        <!-- Amounts and Codes -->
+        <label>{{ form.amount_qualifier_code.label }}</label>
+        {{ form.amount_qualifier_code(class="form-control") }}
+
+        <label>{{ form.patient_amount_paid.label }}</label>
+        {{ form.patient_amount_paid(class="form-control") }}
+
+        <label>{{ form.report_type_code.label }}</label>
+        {{ form.report_type_code(class="form-control") }}
+
+        <label>{{ form.report_transmission_code.label }}</label>
+        {{ form.report_transmission_code(class="form-control") }}
+
+        <!-- Patient Information -->
+        <label>{{ form.patient_weight.label }}</label>
+        {{ form.patient_weight(class="form-control") }}
+
+        <!-- Ambulance and Condition Information -->
+        <label>{{ form.ambulance_transport_code.label }}</label>
+        {{ form.ambulance_transport_code(class="form-control") }}
+
+        <label>{{ form.condition_indicator.label }}</label>
+        {{ form.condition_indicator(class="form-control") }}
+
+        <label>{{ form.condition_code.label }}</label>
+        {{ form.condition_code(class="form-control") }}
+
+        <!-- Submit Button -->
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</body>
+</html>
