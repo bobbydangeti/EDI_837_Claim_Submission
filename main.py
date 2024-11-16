@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for
-from forms import BillingProviderForm, SubscriberInformationForm, ClaimForm
+from forms import BillingProviderForm, SubscriberInformationForm, ClaimForm, ServiceLineForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -24,16 +24,25 @@ def subscriber_information():
         return redirect(url_for('claim_information'))
     return render_template('subscriber_information.html', form=form)
 
-# New route for claim information
 @app.route('/claim_information', methods=['GET', 'POST'])
 def claim_information():
     form = ClaimForm()
     if form.validate_on_submit():
-        claim_id = form.claim_id.data
-        claim_identifier_transmission = form.claim_identifier_transmission.data
-        # Use claim_id and claim_identifier_transmission for further processing
-        return f"Claim ID: {claim_id}, Claim Transmission Identifier: {claim_identifier_transmission}"
+        print("Form Submitted Successfully")
+        return redirect(url_for('service_line'))
+    else:
+        print(form.errors)  # This will show validation errors if any field fails validation
     return render_template('claim_information.html', form=form)
+
+# New route for service line information
+@app.route('/service_line', methods=['GET', 'POST'])
+def service_line():
+    form = ServiceLineForm()
+    if form.validate_on_submit():
+        # Process service line data here
+        return "Service Line Submitted Successfully"
+    return render_template('service_line.html', form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)
+

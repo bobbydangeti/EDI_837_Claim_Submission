@@ -194,7 +194,8 @@ class ClaimForm(FlaskForm):
     # Dates and Service Information
     date_time_qualifier = HiddenField("Date/Time Qualifier", default="434")  # Set the default value to "434"
     date_format_qualifier = HiddenField("Date Format Qualifier", default="D8")  # Set the default value to "D8"
-    date_of_service = DateField("Date of Service", validators=[DataRequired()], format='%Y-%m-%d')
+    date_of_service = StringField("Date of Service", validators=[DataRequired(), Regexp(r'^\d{2}-\d{2}-\d{4}$', message="Date of Birth must be in DD-MM-YYYY format.")])
+
 
     # Diagnosis Codes
     diagnosis_code_qualifier = HiddenField("Diagnosis Code Qualifier", default="ABK")  # Set the default value to "D8"
@@ -242,10 +243,52 @@ class ClaimForm(FlaskForm):
     )
 
     # Submit Button
-    submit = SubmitField("Submit Claim")
+    submit = SubmitField("Next")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Automatically populate claim_identifier_transmission with claim_id
         if self.claim_id.data:
             self.claim_identifier_transmission.data = self.claim_id.data
+
+
+class ServiceLineForm(FlaskForm):
+    # Service Line Information
+    assigned_number = IntegerField("Assigned Number", validators=[DataRequired(), NumberRange(min=1, message="Assigned Number must be greater than 0")])
+    procedure_code_qualifier = HiddenField("Procedure Code Qualifier", default="HC")  # Default to "HC"
+    procedure_code = StringField("Procedure Code", validators=[DataRequired(), Length(max=10)])
+    line_item_charge_amount = DecimalField("Line Item Charge Amount", validators=[DataRequired(), NumberRange(min=0)], places=2)
+    unit_or_basis_code = SelectField(
+        "Unit or Basis for Measurement Code",
+        choices=[("UN", "Units"), ("MJ", "Minutes"), ("DA", "Days")],
+        default="UN",
+        validators=[DataRequired()]
+    )
+    service_unit_count = IntegerField("Service Unit Count", validators=[DataRequired(), NumberRange(min=1, message="Service Unit Count must be greater than 0")])
+    diagnosis_code_pointer1 = StringField("Diagnosis Code Pointer 1", validators=[Optional(), Length(max=10)])
+    diagnosis_code_pointer2 = StringField("Diagnosis Code Pointer 2", validators=[Optional(), Length(max=10)])
+    
+    # Date Information
+    date_time_qualifier = HiddenField("Date/Time Qualifier", default="472")  # Default to "472"
+    date_format_qualifier = HiddenField("Date Format Qualifier", default="D8")  # Default to "D8"
+    service_date = DateField("Service Date", validators=[DataRequired()], format='%Y-%m-%d')
+    
+    # Reference Information
+    reference_id_qualifier = HiddenField("Reference Identification Qualifier", default="6R")  # Default to "6R"
+    line_item_control_number = StringField("Line Item Control Number", validators=[DataRequired(), Length(max=20)])
+    
+    # Amount Information
+    amount_qualifier_code = HiddenField("Amount Qualifier Code", default="B6")  # Default to "B6"
+    approved_amount = DecimalField("Approved Amount", validators=[Optional(), NumberRange(min=0)], places=2)
+    
+    # Additional Information
+    file_information = TextAreaField("File Information", validators=[Optional(), Length(max=200)])
+    note_reference_code = HiddenField("Note Reference Code", default="ADD")  # Default to "ADD"
+    service_line_note_text = TextAreaField("Service Line Note Text", validators=[Optional(), Length(max=200)])
+    
+    # Purchased Service Information
+    purchased_service_provider_id = StringField("Purchased Service Provider ID", validators=[Optional(), Length(max=20)])
+    purchased_service_charge_amount = DecimalField("Purchased Service Charge Amount", validators=[Optional(), NumberRange(min=0)], places=2)
+
+    # Submit Button
+    submit = SubmitField("Submit Service Line")

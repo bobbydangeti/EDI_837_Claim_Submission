@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Line Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Service Line Information</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <label>{{ form.assigned_number.label }}</label>
+        {{ form.assigned_number() }}
+        {% if form.assigned_number.errors %}
+            <p style="color: red;">{{ form.assigned_number.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.procedure_code.label }}</label>
+        {{ form.procedure_code() }}
+        {% if form.procedure_code.errors %}
+            <p style="color: red;">{{ form.procedure_code.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.line_item_charge_amount.label }}</label>
+        {{ form.line_item_charge_amount() }}
+        {% if form.line_item_charge_amount.errors %}
+            <p style="color: red;">{{ form.line_item_charge_amount.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.unit_or_basis_code.label }}</label>
+        {{ form.unit_or_basis_code() }}
+        {% if form.unit_or_basis_code.errors %}
+            <p style="color: red;">{{ form.unit_or_basis_code.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.service_unit_count.label }}</label>
+        {{ form.service_unit_count() }}
+        {% if form.service_unit_count.errors %}
+            <p style="color: red;">{{ form.service_unit_count.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.diagnosis_code_pointer1.label }}</label>
+        {{ form.diagnosis_code_pointer1() }}
+        {% if form.diagnosis_code_pointer1.errors %}
+            <p style="color: red;">{{ form.diagnosis_code_pointer1.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.diagnosis_code_pointer2.label }}</label>
+        {{ form.diagnosis_code_pointer2() }}
+        {% if form.diagnosis_code_pointer2.errors %}
+            <p style="color: red;">{{ form.diagnosis_code_pointer2.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.service_date.label }}</label>
+        {{ form.service_date() }}
+        {% if form.service_date.errors %}
+            <p style="color: red;">{{ form.service_date.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.line_item_control_number.label }}</label>
+        {{ form.line_item_control_number() }}
+        {% if form.line_item_control_number.errors %}
+            <p style="color: red;">{{ form.line_item_control_number.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.approved_amount.label }}</label>
+        {{ form.approved_amount() }}
+        {% if form.approved_amount.errors %}
+            <p style="color: red;">{{ form.approved_amount.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.file_information.label }}</label>
+        {{ form.file_information() }}
+        {% if form.file_information.errors %}
+            <p style="color: red;">{{ form.file_information.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.service_line_note_text.label }}</label>
+        {{ form.service_line_note_text() }}
+        {% if form.service_line_note_text.errors %}
+            <p style="color: red;">{{ form.service_line_note_text.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.purchased_service_provider_id.label }}</label>
+        {{ form.purchased_service_provider_id() }}
+        {% if form.purchased_service_provider_id.errors %}
+            <p style="color: red;">{{ form.purchased_service_provider_id.errors[0] }}</p>
+        {% endif %}
+
+        <label>{{ form.purchased_service_charge_amount.label }}</label>
+        {{ form.purchased_service_charge_amount() }}
+        {% if form.purchased_service_charge_amount.errors %}
+            <p style="color: red;">{{ form.purchased_service_charge_amount.errors[0] }}</p>
+        {% endif %}
+
+        <button type="submit">Submit Service Line</button>
+    </form>
+</body>
+</html>

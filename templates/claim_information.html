@@ -25,6 +25,13 @@
             <p style="color: red;">{{ form.claim_amount.errors[0] }}</p>
         {% endif %}
 
+ 	<!-- Date of Service -->
+        <label for="date_of_service">{{ form.date_of_service.label }}</label>
+        {{ form.date_of_service(class="form-control", placeholder="dd-mm-yyyy") }}
+        {% if form.date_of_service.errors %}
+            <p style="color: red;">{{ form.date_of_service.errors[0] }}</p>
+        {% endif %}
+
         <!-- Place of Service Code -->
         <label for="place_of_service_code">{{ form.place_of_service_code.label }}</label>
         {{ form.place_of_service_code(class="form-control") }}
