@@ -3,98 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim Form</title>
+    <title>Claim Information Form</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Claim Form</h1>
+    <h1>Claim Information Form</h1>
     <form method="POST" action="{{ url_for('claim_information') }}">
         {{ form.hidden_tag() }}
 
-        <!-- Claim Information -->
-        <label>{{ form.claim_id.label }}</label>
+        <!-- Claim ID -->
+        <label for="claim_id">{{ form.claim_id.label }}</label>
         {{ form.claim_id(class="form-control") }}
-        
-        <label>{{ form.claim_amount.label }}</label>
+        {% if form.claim_id.errors %}
+            <p style="color: red;">{{ form.claim_id.errors[0] }}</p>
+        {% endif %}
+
+        <!-- Claim Amount -->
+        <label for="claim_amount">{{ form.claim_amount.label }}</label>
         {{ form.claim_amount(class="form-control") }}
+        {% if form.claim_amount.errors %}
+            <p style="color: red;">{{ form.claim_amount.errors[0] }}</p>
+        {% endif %}
 
-        <label>{{ form.place_of_service_code.label }}</label>
+        <!-- Place of Service Code -->
+        <label for="place_of_service_code">{{ form.place_of_service_code.label }}</label>
         {{ form.place_of_service_code(class="form-control") }}
+        {% if form.place_of_service_code.errors %}
+            <p style="color: red;">{{ form.place_of_service_code.errors[0] }}</p>
+        {% endif %}
 
-        {{ form.claim_frequency_code() }} <!-- Hidden field -->
+        <!-- Claim Identifier for Transmission (Automatically Populated) -->
+        <label for="claim_identifier_transmission">{{ form.claim_identifier_transmission.label }}</label>
+        {{ form.claim_identifier_transmission(class="form-control", readonly="readonly") }}
+        {% if form.claim_identifier_transmission.errors %}
+            <p style="color: red;">{{ form.claim_identifier_transmission.errors[0] }}</p>
+        {% endif %}
 
-        <label>{{ form.provider_signature_indicator.label }}</label>
-        {{ form.provider_signature_indicator(class="form-control") }}
-
-        <label>{{ form.assignment_of_benefits_indicator.label }}</label>
-        {{ form.assignment_of_benefits_indicator(class="form-control") }}
-
-        <label>{{ form.patient_signature_indicator.label }}</label>
-        {{ form.patient_signature_indicator(class="form-control") }}
-
-        <label>{{ form.release_of_information_code.label }}</label>
-        {{ form.release_of_information_code(class="form-control") }}
-
-        <!-- Dates and Service Information -->
-        <label>{{ form.date_time_qualifier.label }}</label>
-        {{ form.date_time_qualifier(class="form-control") }}
-
-        <label>{{ form.date_format_qualifier.label }}</label>
-        {{ form.date_format_qualifier(class="form-control") }}
-
-        <label>{{ form.date_of_service.label }}</label>
-        {{ form.date_of_service(class="form-control", placeholder="YYYY-MM-DD") }}
-
-        <!-- Diagnosis Codes -->
-        <label>{{ form.diagnosis_code_qualifier.label }}</label>
-        {{ form.diagnosis_code_qualifier(class="form-control") }}
-
-        <label>{{ form.diagnosis_code.label }}</label>
+        <!-- Diagnosis Code -->
+        <label for="diagnosis_code">{{ form.diagnosis_code.label }}</label>
         {{ form.diagnosis_code(class="form-control") }}
+        {% if form.diagnosis_code.errors %}
+            <p style="color: red;">{{ form.diagnosis_code.errors[0] }}</p>
+        {% endif %}
 
-        <label>{{ form.additional_diagnosis_codes.label }}</label>
+        <!-- Additional Diagnosis Codes -->
+        <label for="additional_diagnosis_codes">{{ form.additional_diagnosis_codes.label }}</label>
         {{ form.additional_diagnosis_codes(class="form-control") }}
+        {% if form.additional_diagnosis_codes.errors %}
+            <p style="color: red;">{{ form.additional_diagnosis_codes.errors[0] }}</p>
+        {% endif %}
 
-        <!-- Reference Identifiers -->
-        <label>{{ form.reference_id_qualifier.label }}</label>
-        {{ form.reference_id_qualifier(class="form-control") }}
+        <!-- Claim Note Text -->
+        <label for="claim_note_text">{{ form.claim_note_text.label }}</label>
+        {{ form.claim_note_text(class="form-control") }}
+        {% if form.claim_note_text.errors %}
+            <p style="color: red;">{{ form.claim_note_text.errors[0] }}</p>
+        {% endif %}
 
-        <label>{{ form.claim_identifier_transmission.label }}</label>
-        {{ form.claim_identifier_transmission(class="form-control") }}
-
-        <!-- Notes -->
-        <label>{{ form.note_reference_code.label }}</label>
-        {{ form.note_reference_code(class="form-control") }}
-
-        <label>{{ form.claim_note_text.label }}</label>
-        {{ form.claim_note_text(class="form-control", rows="3") }}
-
-        <!-- Amounts and Codes -->
-        <label>{{ form.amount_qualifier_code.label }}</label>
-        {{ form.amount_qualifier_code(class="form-control") }}
-
-        <label>{{ form.patient_amount_paid.label }}</label>
-        {{ form.patient_amount_paid(class="form-control") }}
-
-        <label>{{ form.report_type_code.label }}</label>
-        {{ form.report_type_code(class="form-control") }}
-
-        <label>{{ form.report_transmission_code.label }}</label>
-        {{ form.report_transmission_code(class="form-control") }}
-
-        <!-- Patient Information -->
-        <label>{{ form.patient_weight.label }}</label>
+        <!-- Patient Weight -->
+        <label for="patient_weight">{{ form.patient_weight.label }}</label>
         {{ form.patient_weight(class="form-control") }}
+        {% if form.patient_weight.errors %}
+            <p style="color: red;">{{ form.patient_weight.errors[0] }}</p>
+        {% endif %}
 
-        <!-- Ambulance and Condition Information -->
-        <label>{{ form.ambulance_transport_code.label }}</label>
-        {{ form.ambulance_transport_code(class="form-control") }}
-
-        <label>{{ form.condition_indicator.label }}</label>
+        <!-- Condition Indicator -->
+        <label for="condition_indicator">{{ form.condition_indicator.label }}</label>
         {{ form.condition_indicator(class="form-control") }}
+        {% if form.condition_indicator.errors %}
+            <p style="color: red;">{{ form.condition_indicator.errors[0] }}</p>
+        {% endif %}
 
-        <label>{{ form.condition_code.label }}</label>
+        <!-- Condition Code -->
+        <label for="condition_code">{{ form.condition_code.label }}</label>
         {{ form.condition_code(class="form-control") }}
+        {% if form.condition_code.errors %}
+            <p style="color: red;">{{ form.condition_code.errors[0] }}</p>
+        {% endif %}
 
         <!-- Submit Button -->
         {{ form.submit(class="btn btn-primary") }}

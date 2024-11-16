@@ -46,13 +46,6 @@
             <p style="color: red;">{{ form.middle_name.errors[0] }}</p>
         {% endif %}
 
-        <!-- Identification Code Qualifier -->
-        <label>{{ form.id_code_qualifier.label }}</label>
-        {{ form.id_code_qualifier() }}
-        {% if form.id_code_qualifier.errors %}
-            <p style="color: red;">{{ form.id_code_qualifier.errors[0] }}</p>
-        {% endif %}
-
         <!-- Billing Provider Identifier -->
         <label>{{ form.provider_identifier.label }}<span class="required">*</span></label>
         {{ form.provider_identifier() }}

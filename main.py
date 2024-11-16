@@ -29,8 +29,10 @@ def subscriber_information():
 def claim_information():
     form = ClaimForm()
     if form.validate_on_submit():
-        # Process claim form data
-        pass  # Placeholder for claim form processing logic
+        claim_id = form.claim_id.data
+        claim_identifier_transmission = form.claim_identifier_transmission.data
+        # Use claim_id and claim_identifier_transmission for further processing
+        return f"Claim ID: {claim_id}, Claim Transmission Identifier: {claim_identifier_transmission}"
     return render_template('claim_information.html', form=form)
 
 if __name__ == "__main__":
