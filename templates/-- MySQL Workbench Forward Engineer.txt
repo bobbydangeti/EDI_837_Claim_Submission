@@ -1,0 +1,165 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema Edi-837schema
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema Edi-837schema
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Edi-837schema` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `Edi-837schema` ;
+
+-- -----------------------------------------------------
+-- Table `Edi-837schema`.`ClaimForm`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Edi-837schema`.`ClaimForm` (
+  `claim_id` VARCHAR(25) NOT NULL,
+  `claim_amount` INT NOT NULL,
+  `place_of_service_code` INT NOT NULL,
+  `claim_frequency_code` INT NOT NULL,
+  `provider_signature_indicator` VARCHAR(5) NOT NULL,
+  `assignment_of_benefits_indicator` VARCHAR(5) NOT NULL,
+  `patient_signature_indicator` VARCHAR(5) NOT NULL,
+  `release_of_information_code` VARCHAR(5) NOT NULL,
+  `date_time_qualifier` INT NOT NULL,
+  `date_format_qualifier` VARCHAR(5) NOT NULL,
+  `date_of_service` VARCHAR(45) NOT NULL,
+  `diagnosis_code_qualifier` VARCHAR(5) NOT NULL,
+  `diagnosis_code` VARCHAR(10) NOT NULL,
+  `additional_diagnosis_codes` VARCHAR(10) NULL DEFAULT NULL,
+  `reference_id_qualifier` VARCHAR(5) NOT NULL,
+  `claim_identifier_transmission` VARCHAR(5) NOT NULL,
+  `note_reference_code` VARCHAR(5) NOT NULL,
+  `claim_note_text` VARCHAR(45) NULL DEFAULT NULL,
+  `amount_qualifier_code` VARCHAR(5) NOT NULL,
+  `patient_amount_paid` DECIMAL(10,0) NOT NULL,
+  `report_type_code` VARCHAR(5) NOT NULL,
+  `report_transmission_code` VARCHAR(5) NOT NULL,
+  `patient_weight` DECIMAL(3,0) NOT NULL,
+  `ambulance_transport_code` VARCHAR(5) NOT NULL,
+  `condition_indicator` VARCHAR(3) NOT NULL,
+  `condition_code` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`claim_id`),
+  UNIQUE INDEX `claim_id_UNIQUE` (`claim_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `Edi-837schema`.`Billing_provider`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Edi-837schema`.`Billing_provider` (
+  `Billing Provider Identifier (NPI)` INT NOT NULL,
+  `Entity Identifier Code` VARCHAR(45) NOT NULL,
+  `Entity Type Qualifier` VARCHAR(45) NOT NULL,
+  `Billing Provider Last Name/Organization Name` VARCHAR(45) NOT NULL,
+  `Billing Provider First Name` VARCHAR(45) NOT NULL,
+  `Billing Provider Middle Name` VARCHAR(45) NULL DEFAULT NULL,
+  `Address Line 1` VARCHAR(45) NULL DEFAULT NULL,
+  `Address Line 2` VARCHAR(45) NULL DEFAULT NULL,
+  `City Name` VARCHAR(45) NOT NULL,
+  `State` VARCHAR(45) NOT NULL,
+  `Postal (ZIP) Code` VARCHAR(8) NOT NULL,
+  `Country Code` VARCHAR(2) NOT NULL,
+  `Reference Identification Qualifier` VARCHAR(45) NULL DEFAULT NULL,
+  `Billing Provider Secondary Identifier` VARCHAR(11) NULL DEFAULT NULL,
+  `Contact Function Code` VARCHAR(45) NULL DEFAULT NULL,
+  `Billing Provider Contact Name` VARCHAR(45) NULL DEFAULT NULL,
+  `Communication Number Qualifier` VARCHAR(45) NULL DEFAULT NULL,
+  `Communication Number` VARCHAR(15) NULL DEFAULT NULL,
+  `id_code_qualifier` VARCHAR(45) NULL DEFAULT NULL,
+  `ClaimForm_claim_id` VARCHAR(25) NOT NULL,
+  PRIMARY KEY (`Billing Provider Identifier (NPI)`, `ClaimForm_claim_id`),
+  UNIQUE INDEX `Billing Provider Identifier (NPI)_UNIQUE` (`Billing Provider Identifier (NPI)` ASC) VISIBLE,
+  INDEX `fk_Billing_provider_ClaimForm1_idx` (`ClaimForm_claim_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Billing_provider_ClaimForm1`
+    FOREIGN KEY (`ClaimForm_claim_id`)
+    REFERENCES `Edi-837schema`.`ClaimForm` (`claim_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `Edi-837schema`.`ServiceLineForm`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Edi-837schema`.`ServiceLineForm` (
+  `assigned_number` INT NOT NULL,
+  `procedure_code_qualifier` VARCHAR(5) NULL DEFAULT NULL,
+  `procedure_code` VARCHAR(15) NULL DEFAULT NULL,
+  `line_item_charge_amount` DECIMAL(5,0) NULL DEFAULT NULL,
+  `unit_or_basis_code` VARCHAR(15) NULL DEFAULT NULL,
+  `service_unit_count` INT NULL DEFAULT NULL,
+  `diagnosis_code_pointer1` VARCHAR(15) NULL DEFAULT NULL,
+  `diagnosis_code_pointer2` VARCHAR(15) NULL DEFAULT NULL,
+  `date_time_qualifier` VARCHAR(5) NULL DEFAULT NULL,
+  `date_format_qualifier` VARCHAR(5) NULL DEFAULT NULL,
+  `service_date` DATE NULL DEFAULT NULL,
+  `reference_id_qualifier` VARCHAR(5) NULL DEFAULT NULL,
+  `line_item_control_number` VARCHAR(45) NULL DEFAULT NULL,
+  `amount_qualifier_code` VARCHAR(5) NULL DEFAULT NULL,
+  `approved_amount` VARCHAR(45) NULL DEFAULT NULL,
+  `file_information` VARCHAR(45) NULL DEFAULT NULL,
+  `note_reference_code` VARCHAR(5) NULL DEFAULT NULL,
+  `service_line_note_text` VARCHAR(45) NULL DEFAULT NULL,
+  `purchased_service_provider_id` VARCHAR(45) NULL DEFAULT NULL,
+  `purchased_service_charge_amount` DECIMAL(3,0) NULL DEFAULT NULL,
+  `ClaimForm_claim_id` VARCHAR(25) NOT NULL,
+  PRIMARY KEY (`assigned_number`, `ClaimForm_claim_id`),
+  UNIQUE INDEX `assigned_number_UNIQUE` (`assigned_number` ASC) VISIBLE,
+  INDEX `fk_ServiceLineForm_ClaimForm_idx` (`ClaimForm_claim_id` ASC) VISIBLE,
+  CONSTRAINT `fk_ServiceLineForm_ClaimForm`
+    FOREIGN KEY (`ClaimForm_claim_id`)
+    REFERENCES `Edi-837schema`.`ClaimForm` (`claim_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `Edi-837schema`.`Subscriber information form`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Edi-837schema`.`Subscriber information form` (
+  `Subscriber Identifier` INT NOT NULL,
+  `Subscriber Last Name` VARCHAR(45) NOT NULL,
+  `Subscriber First Name` VARCHAR(45) NOT NULL,
+  `Subscriber Middle Name` VARCHAR(45) NULL DEFAULT NULL,
+  `Identification Code Qualifier` VARCHAR(45) NULL DEFAULT NULL,
+  `Address Line 1` VARCHAR(45) NULL DEFAULT NULL,
+  `Address Line 2` VARCHAR(45) NULL DEFAULT NULL,
+  `City` VARCHAR(45) NOT NULL,
+  `State` VARCHAR(45) NOT NULL,
+  `ZIP Code` VARCHAR(45) NOT NULL,
+  `Country Code` VARCHAR(2) NOT NULL,
+  `date_of_birth` DATE NULL DEFAULT NULL,
+  `Gender` VARCHAR(45) NOT NULL,
+  `ClaimForm_claim_id` VARCHAR(25) NOT NULL,
+  PRIMARY KEY (`Subscriber Identifier`, `ClaimForm_claim_id`),
+  UNIQUE INDEX `Subscriber Identifier_UNIQUE` (`Subscriber Identifier` ASC) VISIBLE,
+  INDEX `fk_Subscriber information form_ClaimForm1_idx` (`ClaimForm_claim_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Subscriber information form_ClaimForm1`
+    FOREIGN KEY (`ClaimForm_claim_id`)
+    REFERENCES `Edi-837schema`.`ClaimForm` (`claim_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

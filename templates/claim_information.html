@@ -67,6 +67,13 @@
             <p style="color: red;">{{ form.claim_note_text.errors[0] }}</p>
         {% endif %}
 
+	<!-- patient_amount_paid -->
+        <label for="patient_amount_paid">{{ form.patient_amount_paid.label }}</label>
+        {{ form.patient_amount_paid(class="form-control") }}
+        {% if form.patient_amount_paid.errors %}
+            <p style="color: red;">{{ form.patient_amount_paid[0] }}</p>
+        {% endif %}
+
         <!-- Patient Weight -->
         <label for="patient_weight">{{ form.patient_weight.label }}</label>
         {{ form.patient_weight(class="form-control") }}
